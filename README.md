@@ -42,9 +42,7 @@ redactor.py        Synthetic replacement and DOCX redaction
 ocr_processor.py   OCR and image-region redaction
 evaluator.py       Benchmark evaluation
 main.py            CLI entry point
-app.py             FastAPI web interface
 streamlit_app.py   Streamlit web interface
-templates/         Web UI
 tests/             Automated tests
 ```
 
@@ -58,11 +56,7 @@ python -m spacy download en_core_web_sm
 Run the web application:
 
 ```bash
-# Streamlit interface (interactive web app)
 streamlit run streamlit_app.py
-
-# Or FastAPI interface
-uvicorn app:app --reload
 ```
 
 Run tests:
@@ -92,6 +86,6 @@ See [`EVALUATION.md`](EVALUATION.md) for the evaluation methodology, metrics, be
 * **Live Demo:** [https://scalerassignment-pii-redaction.streamlit.app/](https://scalerassignment-pii-redaction.streamlit.app/)
 * Source code
 * Redacted RHP (`.docx`)
-* Web interfaces (Streamlit & FastAPI)
+* Streamlit web interface
 * Evaluation report
 * Automated tests
