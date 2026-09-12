@@ -1,5 +1,8 @@
 # PII Redaction & Anonymization
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://scalerassignment-pii-redaction.streamlit.app/)
+> **Live Demo:** [https://scalerassignment-pii-redaction.streamlit.app/](https://scalerassignment-pii-redaction.streamlit.app/)
+
 Python-based tool for detecting and redacting PII from Microsoft Word (`.docx`) documents. Built for the KSH International Limited Red Herring Prospectus assignment.
 
 ## Approach
@@ -55,6 +58,10 @@ python -m spacy download en_core_web_sm
 Run the web application:
 
 ```bash
+# Streamlit interface (interactive web app)
+streamlit run streamlit_app.py
+
+# Or FastAPI interface
 uvicorn app:app --reload
 ```
 
@@ -82,8 +89,9 @@ See [`EVALUATION.md`](EVALUATION.md) for the evaluation methodology, metrics, be
 
 ## Deliverables
 
+* **Live Demo:** [https://scalerassignment-pii-redaction.streamlit.app/](https://scalerassignment-pii-redaction.streamlit.app/)
 * Source code
 * Redacted RHP (`.docx`)
-* FastAPI web interface
+* Web interfaces (Streamlit & FastAPI)
 * Evaluation report
 * Automated tests
