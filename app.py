@@ -57,16 +57,10 @@ def get_engine() -> Tuple[PiiDetector, PiiRedactor]:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Pre-warm PII detection models on server startup."""
-    logger.info("Initializing PII detection and redaction models...")
+    """Pre-warm core PII detection models on server startup without blocking port binding."""
+    logger.info("Initializing PII detection engine...")
     get_engine()
-    try:
-        from ocr_processor import _get_reader
-        _get_reader()
-        logger.info("EasyOCR engine warmed up.")
-    except Exception as e:
-        logger.warning("EasyOCR warm-up skipped: %s", e)
-    logger.info("Engine ready to process documents.")
+    logger.info("PII engine initialized. Server ready to accept traffic.")
     yield
 
 
