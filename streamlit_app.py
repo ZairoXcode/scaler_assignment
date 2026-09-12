@@ -4,6 +4,7 @@ import gc
 import io
 import os
 import subprocess
+import sys
 import tempfile
 import time
 from collections import Counter
@@ -68,10 +69,14 @@ def get_engine():
         import spacy
         spacy.load("en_core_web_sm")
     except Exception:
-        subprocess.run(
-            ["python", "-m", "spacy", "download", "en_core_web_sm"],
-            check=True,
-        )
+        try:
+            from spacy.cli import download
+            download("en_core_web_sm")
+        except Exception:
+            subprocess.run(
+                [sys.executable, "-m", "spacy", "download", "en_core_web_sm"],
+                check=True,
+            )
 
     detector = PiiDetector("config.yaml")
     redactor = PiiRedactor("config.yaml")

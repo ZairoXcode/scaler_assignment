@@ -40,9 +40,9 @@ ocr_processor.py   OCR and image-region redaction
 evaluator.py       Benchmark evaluation
 main.py            CLI entry point
 app.py             FastAPI web interface
+streamlit_app.py   Streamlit web interface
 templates/         Web UI
 tests/             Automated tests
-render.yaml        Render deployment configuration
 ```
 
 ## Run Locally
