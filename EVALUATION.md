@@ -3,15 +3,13 @@
 Evaluation of the PII detection and redaction tool built for the KSH International Limited Red Herring Prospectus (RHP).
 
 ## Submission Context
-
+ 
 * **Assignment:** KSH International Limited Red Herring Prospectus PII Redaction & Anonymization Engine
-* **GitHub repository:** `YOUR_GITHUB_REPOSITORY_URL`
-* **Live application (Render):** `YOUR_RENDER_SERVICE_URL`
-* **Processed DOCX:** `YOUR_PUBLIC_DOCX_LINK`
+* **GitHub repository:** [https://github.com/ZairoXcode/scaler_assignment](https://github.com/ZairoXcode/scaler_assignment)
+* **Live application (Render):** [https://pii-redaction-engine-cua8.onrender.com/](https://pii-redaction-engine-cua8.onrender.com/)
+* **Processed DOCX:** [Redacted_Red_Herring_Prospectus.docx](https://github.com/ZairoXcode/scaler_assignment/blob/main/Redacted_Red_Herring_Prospectus.docx)
 
-The local output used for verification is `Redacted_Red_Herring_Prospectus.docx`.
-
-The links above are placeholders and should be replaced with the final submission links.
+The local output used for verification is [Redacted_Red_Herring_Prospectus.docx](Redacted_Red_Herring_Prospectus.docx).
 
 ---
 

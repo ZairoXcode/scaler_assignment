@@ -14,7 +14,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Optional, Tuple
 
-from fastapi import FastAPI, File, Request, UploadFile
+from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse, Response
 from fastapi.templating import Jinja2Templates
 
@@ -96,7 +96,10 @@ def index(request: Request):
 
 
 @app.post("/redact")
-async def redact_docx(file: UploadFile = File(...)):
+async def redact_docx(
+    file: UploadFile = File(...),
+    enable_ocr: bool = Form(False),
+):
     """Process an uploaded .docx document, apply redactions, and return the redacted file.
 
     Temporary files are strictly used and removed after processing to prevent
@@ -173,17 +176,22 @@ async def redact_docx(file: UploadFile = File(...)):
                 },
             )
 
-        # Isolated OCR post-pass: detect and redact PII inside embedded images
-        try:
-            import docx as _docx
-            from ocr_processor import process_embedded_images
-            _ocr_doc = _docx.Document(str(temp_output))
-            ocr_count = process_embedded_images(_ocr_doc, detector_inst)
-            if ocr_count > 0:
-                _ocr_doc.save(str(temp_output))
-                total_redactions += ocr_count
-        except Exception as ocr_err:
-            logger.warning("OCR post-pass failed or skipped: %s", ocr_err)
+        # Isolated OCR post-pass: detect and redact PII inside embedded images.
+        # Guarded by enable_ocr flag so free-tier servers with 512MB RAM avoid OOM crashes.
+        if enable_ocr:
+            try:
+                import gc
+                gc.collect()
+                import docx as _docx
+                from ocr_processor import process_embedded_images
+                _ocr_doc = _docx.Document(str(temp_output))
+                ocr_count = process_embedded_images(_ocr_doc, detector_inst)
+                if ocr_count > 0:
+                    _ocr_doc.save(str(temp_output))
+                    total_redactions += ocr_count
+                gc.collect()
+            except Exception as ocr_err:
+                logger.warning("OCR post-pass failed or skipped: %s", ocr_err)
 
         with open(temp_output, "rb") as f_out:
             output_bytes = f_out.read()

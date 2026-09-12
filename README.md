@@ -6,15 +6,13 @@ Built for the **KSH International Limited Red Herring Prospectus (RHP)** assignm
 
 ## Submission Links
 
-These are the links used for assignment review. Replace the three marked placeholders with the final public URLs before submitting:
-
 - **Assignment:** KSH International Limited Red Herring Prospectus PII Redaction & Anonymization Engine
-- **GitHub repository:** `YOUR_GITHUB_REPOSITORY_URL`
-- **Live application (Render):** `YOUR_RENDER_SERVICE_URL`
+- **GitHub repository:** [https://github.com/ZairoXcode/scaler_assignment](https://github.com/ZairoXcode/scaler_assignment)
+- **Live application (Render):** [https://pii-redaction-engine-cua8.onrender.com/](https://pii-redaction-engine-cua8.onrender.com/)
 - **Evaluation strategy and metrics:** [EVALUATION.md](EVALUATION.md)
-- **Processed DOCX (public view access):** `YOUR_PUBLIC_DOCX_LINK`
+- **Processed DOCX (public view access):** [Redacted_Red_Herring_Prospectus.docx (GitHub View/Download)](https://github.com/ZairoXcode/scaler_assignment/blob/main/Redacted_Red_Herring_Prospectus.docx)
 
-The processed file is also included locally as [Redacted_Red_Herring_Prospectus.docx](Redacted_Red_Herring_Prospectus.docx). The public DOCX link should point to a share whose access is set to “Anyone with the link can view”.
+The processed file is also included locally in the repository as [Redacted_Red_Herring_Prospectus.docx](Redacted_Red_Herring_Prospectus.docx).
 
 ## How it works
 
