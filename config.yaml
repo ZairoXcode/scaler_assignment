@@ -1,0 +1,79 @@
+# =====================================================================
+# PII Redaction Configuration
+# =====================================================================
+
+# ---------------------------------------------------------------------
+# 3-Tier Organization Redaction Policy
+# ---------------------------------------------------------------------
+# Tier 1: Target company, promoter corporates, and family trusts (redacted)
+# Tier 2: Commercial intermediaries, merchant bankers, auditors (skipped by default)
+# Tier 3: Regulatory authorities, stock exchanges, statutory bodies (never redacted)
+organization_policy:
+  redact_tier_1: true
+  redact_tier_2: false
+  redact_tier_3: false
+
+  tier_1_entities:
+    - "KSH International Limited"
+    - "KSH International Ltd"
+    - "KSH International"
+    - "KSH"
+    - "Waterloo Industrial Park VI Private Limited"
+    - "Waterloo Industrial Park"
+    - "Dhaulagiri Family Trust"
+    - "Everest Family Trust"
+    - "Makalu Family Trust"
+    - "Broad Family Trust"
+    - "Annapurna Family Trust"
+    - "Kanchenjunga Family Trust"
+
+  # Pattern to automatically catch any family/private trust as Tier 1
+  trust_patterns:
+    - "(?i)\\b[A-Za-z\\s]+Family\\s+Trust\\b"
+    - "(?i)\\b[A-Za-z\\s]+Private\\s+Trust\\b"
+
+  tier_2_entities:
+    - "Nuvama Wealth Management Limited"
+    - "Nuvama Wealth Management"
+    - "Nuvama"
+    - "ICICI Securities Limited"
+    - "Link Intime India Private Limited"
+    - "Link Intime"
+    - "Kirtane & Pandit LLP"
+    - "CARE Ratings Limited"
+    - "Kanj & Co LLP"
+
+  tier_3_entities:
+    - "Securities and Exchange Board of India"
+    - "SEBI"
+    - "BSE Limited"
+    - "BSE"
+    - "National Stock Exchange of India Limited"
+    - "NSE"
+    - "Reserve Bank of India"
+    - "RBI"
+    - "Ministry of Corporate Affairs"
+    - "MCA"
+    - "Registrar of Companies"
+    - "RoC"
+    - "Income Tax Department"
+    - "High Court"
+    - "Supreme Court of India"
+    - "National Company Law Tribunal"
+    - "NCLT"
+
+# ---------------------------------------------------------------------
+# NLP Model Configuration
+# ---------------------------------------------------------------------
+nlp:
+  # en_core_web_sm: Fast (~12MB), runs entire 127-page document in ~12 seconds on CPU
+  # en_core_web_trf: Transformer (~450MB), recommended when GPU is available
+  model: "en_core_web_sm"
+  batch_size: 64
+
+# ---------------------------------------------------------------------
+# Replacement Settings
+# ---------------------------------------------------------------------
+replacement:
+  seed: 42
+  locale: "en_IN"
