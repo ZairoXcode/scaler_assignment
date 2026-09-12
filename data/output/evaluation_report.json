@@ -1,0 +1,129 @@
+{
+  "benchmark_metadata": {
+    "dataset": "Curated benchmark dataset (ground_truth_sample.json)",
+    "samples_count": 20,
+    "note": "Metrics represent the curated sample benchmark, not proof that the entire 127-page prospectus has perfect recall."
+  },
+  "overall": {
+    "precision": 0.9459,
+    "recall": 0.9211,
+    "f1": 0.9333,
+    "accuracy": "N/A (TN undefined for entity span extraction; sample_level=0.9000, negative_control=1.0000)",
+    "entity_level_accuracy": "N/A (TN undefined for span extraction in free text)",
+    "sample_level_accuracy": 0.9,
+    "negative_control_accuracy": 1.0,
+    "tp": 35,
+    "fp": 2,
+    "fn": 3,
+    "sample_tn": 5,
+    "sample_fp": 0
+  },
+  "accuracy_explanation": {
+    "entity_level": "In Named Entity Recognition (NER), span extraction evaluates entity mentions rather than binary classification. True Negatives (the combinatorial set of all non-entity character/token substrings) are unbounded in continuous text, rendering entity-level Accuracy mathematically degenerate. Consequently, Precision, Recall, and F1-score are standard authoritative metrics in NLP literature (CoNLL/MUC/SemEval).",
+    "sample_level": "At the document/sample classification level where True Negatives are bounded, 18/20 samples (90.0%) were correctly predicted with zero errors.",
+    "negative_control_level": "Across 5 dedicated non-PII negative control samples (regulatory bodies, statutory acts, financial dates, commercial orders, invoices, reference IDs, and DINs), 5/5 (100.0%) were correctly preserved with zero false positives."
+  },
+  "per_category": {
+    "ADDRESS": {
+      "tp": 2,
+      "fp": 1,
+      "fn": 1,
+      "precision": 0.6667,
+      "recall": 0.6667,
+      "f1": 0.6667
+    },
+    "CREDIT_CARD": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "DOB": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "EMAIL": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "IP_ADDRESS": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "ORGANIZATION": {
+      "tp": 6,
+      "fp": 1,
+      "fn": 2,
+      "precision": 0.8571,
+      "recall": 0.75,
+      "f1": 0.8
+    },
+    "PERSON": {
+      "tp": 12,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "PHONE": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "SSN": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  "false_positives": [
+    {
+      "id": "sample_04",
+      "category": "ORGANIZATION",
+      "text": "Annapurna Family Trust and Kanchenjunga Family Trust"
+    },
+    {
+      "id": "sample_13",
+      "category": "ADDRESS",
+      "text": "Link Intime India Private Limited, C-101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai 400 083"
+    }
+  ],
+  "false_negatives": [
+    {
+      "id": "sample_04",
+      "category": "ORGANIZATION",
+      "text": "Annapurna Family Trust"
+    },
+    {
+      "id": "sample_04",
+      "category": "ORGANIZATION",
+      "text": "Kanchenjunga Family Trust"
+    },
+    {
+      "id": "sample_13",
+      "category": "ADDRESS",
+      "text": "C-101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai 400 083"
+    }
+  ]
+}

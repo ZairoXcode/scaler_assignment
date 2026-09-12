@@ -1,0 +1,175 @@
+[
+  {
+    "id": "sample_01",
+    "section": "Corporate Information",
+    "text": "KSH INTERNATIONAL LIMITED was incorporated as a private limited company under the Companies Act, 1956.",
+    "expected_entities": [
+      {"text": "KSH INTERNATIONAL LIMITED", "category": "ORGANIZATION", "tier": 1}
+    ]
+  },
+  {
+    "id": "sample_02",
+    "section": "Registered Office & Contact Details",
+    "text": "Registered Office: Village Birdewadi, Chakan, Taluka Khed, District Pune - 410 501, Maharashtra, India. Tel: +91 20 4505 3237; Email: cs.connect@kshinternational.com; Website: www.kshinternational.com; Contact Person: Sarthak Malvadkar",
+    "expected_entities": [
+      {"text": "Village Birdewadi, Chakan, Taluka Khed, District Pune - 410 501, Maharashtra, India", "category": "ADDRESS"},
+      {"text": "+91 20 4505 3237", "category": "PHONE"},
+      {"text": "cs.connect@kshinternational.com", "category": "EMAIL"},
+      {"text": "Sarthak Malvadkar", "category": "PERSON"}
+    ]
+  },
+  {
+    "id": "sample_03",
+    "section": "Promoters Disclosure",
+    "text": "Kushal Subbayya Hegde, Pushpa Kushal Hegde, Rajesh Kushal Hegde and Rohit Kushal Hegde are the Promoters of our Company.",
+    "expected_entities": [
+      {"text": "Kushal Subbayya Hegde", "category": "PERSON"},
+      {"text": "Pushpa Kushal Hegde", "category": "PERSON"},
+      {"text": "Rajesh Kushal Hegde", "category": "PERSON"},
+      {"text": "Rohit Kushal Hegde", "category": "PERSON"}
+    ]
+  },
+  {
+    "id": "sample_04",
+    "section": "Promoter Group Family Trusts",
+    "text": "Dhaulagiri Family Trust, Everest Family Trust, Makalu Family Trust, Broad Family Trust, Annapurna Family Trust and Kanchenjunga Family Trust are members of the Promoter Group.",
+    "expected_entities": [
+      {"text": "Dhaulagiri Family Trust", "category": "ORGANIZATION", "tier": 1},
+      {"text": "Everest Family Trust", "category": "ORGANIZATION", "tier": 1},
+      {"text": "Makalu Family Trust", "category": "ORGANIZATION", "tier": 1},
+      {"text": "Broad Family Trust", "category": "ORGANIZATION", "tier": 1},
+      {"text": "Annapurna Family Trust", "category": "ORGANIZATION", "tier": 1},
+      {"text": "Kanchenjunga Family Trust", "category": "ORGANIZATION", "tier": 1}
+    ]
+  },
+  {
+    "id": "sample_05",
+    "section": "Book Running Lead Manager",
+    "text": "Book Running Lead Manager: Nuvama Wealth Management Limited. Contact Person: Prakash Boricha. Tel: +91 22 40094400. Email: ksh.ipo@nuvama.com.",
+    "expected_entities": [
+      {"text": "Prakash Boricha", "category": "PERSON"},
+      {"text": "+91 22 40094400", "category": "PHONE"},
+      {"text": "ksh.ipo@nuvama.com", "category": "EMAIL"}
+    ]
+  },
+  {
+    "id": "sample_06",
+    "section": "Statutory Disclaimer (Non-PII Negative Test)",
+    "text": "The Securities and Exchange Board of India (SEBI) does not guarantee the accuracy of any statement. Equity Shares will be listed on BSE Limited and National Stock Exchange of India Limited.",
+    "expected_entities": []
+  },
+  {
+    "id": "sample_07",
+    "section": "Director & DIN (Contextual Suppression Test)",
+    "text": "Amod Joshi, Independent Director, holding DIN: 00135070, residing at Deccan Gymkhana, Prabhat Road, Pune 411004.",
+    "expected_entities": [
+      {"text": "Amod Joshi", "category": "PERSON"},
+      {"text": "Deccan Gymkhana, Prabhat Road, Pune 411004", "category": "ADDRESS"}
+    ]
+  },
+  {
+    "id": "sample_08",
+    "section": "Chief Financial Officer Contact",
+    "text": "Sandesh Bhagwat is the Chief Financial Officer. Contact: 020-45053237 or cfo@kshinternational.com.",
+    "expected_entities": [
+      {"text": "Sandesh Bhagwat", "category": "PERSON"},
+      {"text": "020-45053237", "category": "PHONE"},
+      {"text": "cfo@kshinternational.com", "category": "EMAIL"}
+    ]
+  },
+  {
+    "id": "sample_09",
+    "section": "Corporate Promoter",
+    "text": "Waterloo Industrial Park VI Private Limited holds 15,000 Equity Shares and is part of the Promoter Group.",
+    "expected_entities": [
+      {"text": "Waterloo Industrial Park VI Private Limited", "category": "ORGANIZATION", "tier": 1}
+    ]
+  },
+  {
+    "id": "sample_10",
+    "section": "Promoter Tax Identification (PAN Preservation)",
+    "text": "Permanent Account Number of Rajesh Kushal Hegde is ABCDE1234F.",
+    "expected_entities": [
+      {"text": "Rajesh Kushal Hegde", "category": "PERSON"}
+    ]
+  },
+  {
+    "id": "sample_11",
+    "section": "Statutory Regulation References (Negative Test)",
+    "text": "The Offer is made under Chapter IX of SEBI ICDR Regulations and Section 26 of the Companies Act, 2013.",
+    "expected_entities": []
+  },
+  {
+    "id": "sample_12",
+    "section": "Director Birth Details",
+    "text": "Rohit Kushal Hegde, Whole-Time Director, Date of Birth: August 14, 1982, aged 42 years.",
+    "expected_entities": [
+      {"text": "Rohit Kushal Hegde", "category": "PERSON"},
+      {"text": "August 14, 1982", "category": "DOB"}
+    ]
+  },
+  {
+    "id": "sample_13",
+    "section": "Registrar to the Offer",
+    "text": "Registrar: Link Intime India Private Limited, C-101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai 400 083. Tel: +91 22 4918 6200. Email: ksh.ipo@linkintime.co.in.",
+    "expected_entities": [
+      {"text": "C-101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai 400 083", "category": "ADDRESS"},
+      {"text": "+91 22 4918 6200", "category": "PHONE"},
+      {"text": "ksh.ipo@linkintime.co.in", "category": "EMAIL"}
+    ]
+  },
+  {
+    "id": "sample_14",
+    "section": "Shareholder Contact",
+    "text": "Notice sent to shareholder Rakhi Girija Shetty at hingnetare@gmail.com, mobile: +91 9822012345.",
+    "expected_entities": [
+      {"text": "Rakhi Girija Shetty", "category": "PERSON"},
+      {"text": "hingnetare@gmail.com", "category": "EMAIL"},
+      {"text": "+91 9822012345", "category": "PHONE"}
+    ]
+  },
+  {
+    "id": "sample_15",
+    "section": "Financial Reporting Period (Non-PII Date Test)",
+    "text": "For the period ended March 31, 2024 and Fiscal 2023, restated revenue was Rs. 4,200.50 Lakhs.",
+    "expected_entities": []
+  },
+  {
+    "id": "sample_16",
+    "section": "Foreign Shareholder Disclosure (Synthetic SSN Test)",
+    "text": "Non-resident investor Johnathan Miller, US taxpayer SSN: 123-45-6789, holds 2,500 Equity Shares.",
+    "expected_entities": [
+      {"text": "Johnathan Miller", "category": "PERSON"},
+      {"text": "123-45-6789", "category": "SSN"}
+    ]
+  },
+  {
+    "id": "sample_17",
+    "section": "Application Fee Settlement (Synthetic Credit Card Test)",
+    "text": "Filing fee settled via corporate card 4532015112830366 by authorization.",
+    "expected_entities": [
+      {"text": "4532015112830366", "category": "CREDIT_CARD"}
+    ]
+  },
+  {
+    "id": "sample_18",
+    "section": "Electronic Bidding Infrastructure (Synthetic IP Test)",
+    "text": "The primary bidding platform host is located at 192.168.1.10 with fallback server 10.0.0.1.",
+    "expected_entities": [
+      {"text": "192.168.1.10", "category": "IP_ADDRESS"},
+      {"text": "10.0.0.1", "category": "IP_ADDRESS"}
+    ]
+  },
+  {
+    "id": "sample_19",
+    "section": "Financial & Commercial Identifiers (Non-PII Negative Test)",
+    "text": "Purchase Order PO-87654321, Invoice # 9876543210, and tracking Reference No. 87654321 processed under Account Ref 98765432.",
+    "expected_entities": []
+  },
+  {
+    "id": "sample_20",
+    "section": "Operational & Regulatory Identifiers (Non-PII Negative Test)",
+    "text": "Insurance Policy No. 9876543210 under Group Scheme, Support Ticket No. 76543210, and Director DIN 00234567 were recorded.",
+    "expected_entities": []
+  }
+]
