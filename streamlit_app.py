@@ -25,10 +25,7 @@ st.set_page_config(
 )
 
 st.title("PII Redaction Engine")
-st.write(
-    "Upload a Microsoft Word (.docx) document to detect and redact personally identifiable "
-    "information across text paragraphs, tables, and embedded images."
-)
+st.write("Upload a Microsoft Word (.docx) document.")
 
 # -----------------------------------------------------------------------------
 # Model Initialization
@@ -60,65 +57,75 @@ detector, redactor = get_engine()
 # Document Upload & Action
 # -----------------------------------------------------------------------------
 with st.container(border=True):
-    st.subheader("Document Upload")
     uploaded_file = st.file_uploader(
-        "Choose a Word document (.docx)",
+        "Upload a Microsoft Word document (.docx)",
         type=["docx"],
-        help="Upload a .docx file for redaction",
     )
 
     if uploaded_file is not None:
         file_size_kb = uploaded_file.size / 1024
         st.caption(f"Selected: **{uploaded_file.name}** ({file_size_kb:.1f} KB)")
         st.write("")
-        redact_button = st.button("Redact Document", type="primary", use_container_width=True)
+        button_placeholder = st.empty()
+        redact_clicked = button_placeholder.button(
+            "Redact Document",
+            type="primary",
+            use_container_width=True,
+            key="redact_btn",
+        )
     else:
-        redact_button = False
+        redact_clicked = False
 
 # -----------------------------------------------------------------------------
 # Processing & Results
 # -----------------------------------------------------------------------------
-if uploaded_file is not None and redact_button:
-    progress_placeholder = st.empty()
-    progress_placeholder.info("Processing document text and images...")
+if uploaded_file is not None and redact_clicked:
+    # Disable the button immediately while processing runs
+    button_placeholder.button(
+        "Redact Document",
+        type="primary",
+        use_container_width=True,
+        disabled=True,
+        key="redact_btn_disabled",
+    )
 
-    start_time = time.time()
+    with st.spinner("Processing document..."):
+        start_time = time.time()
 
-    with tempfile.TemporaryDirectory(prefix="st_pii_") as temp_dir:
-        in_path = Path(temp_dir) / uploaded_file.name
-        out_path = Path(temp_dir) / f"Redacted_{uploaded_file.name}"
+        with tempfile.TemporaryDirectory(prefix="st_pii_") as temp_dir:
+            in_path = Path(temp_dir) / uploaded_file.name
+            out_path = Path(temp_dir) / f"Redacted_{uploaded_file.name}"
 
-        with open(in_path, "wb") as f_in:
-            f_in.write(uploaded_file.getbuffer())
+            with open(in_path, "wb") as f_in:
+                f_in.write(uploaded_file.getbuffer())
 
-        # 1. Native text redaction across paragraphs and tables
-        total_redactions, audits = redactor.redact_document(
-            docx_path=in_path,
-            output_path=out_path,
-            detector=detector,
-            config_path="config.yaml",
-        )
+            # 1. Native text redaction across paragraphs and tables
+            total_redactions, audits = redactor.redact_document(
+                docx_path=in_path,
+                output_path=out_path,
+                detector=detector,
+                config_path="config.yaml",
+            )
 
-        # 2. Process embedded images if present
-        ocr_count = 0
-        try:
-            gc.collect()
-            from ocr_processor import process_embedded_images
-            ocr_doc = docx.Document(str(out_path))
-            ocr_count = process_embedded_images(ocr_doc, detector)
-            if ocr_count > 0:
-                ocr_doc.save(str(out_path))
-                total_redactions += ocr_count
-            gc.collect()
-        except Exception:
-            pass
+            # 2. Process embedded images if present
+            ocr_count = 0
+            try:
+                gc.collect()
+                from ocr_processor import process_embedded_images
+                ocr_doc = docx.Document(str(out_path))
+                ocr_count = process_embedded_images(ocr_doc, detector)
+                if ocr_count > 0:
+                    ocr_doc.save(str(out_path))
+                    total_redactions += ocr_count
+                gc.collect()
+            except Exception:
+                pass
 
-        elapsed = time.time() - start_time
-        progress_placeholder.empty()
+            elapsed = time.time() - start_time
 
-        # Read redacted file bytes
-        with open(out_path, "rb") as f_out:
-            redacted_bytes = f_out.read()
+            # Read redacted file bytes
+            with open(out_path, "rb") as f_out:
+                redacted_bytes = f_out.read()
 
         # Results container
         with st.container(border=True):
