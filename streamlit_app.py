@@ -26,36 +26,10 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-st.markdown(
-    """
-    <style>
-    .main-header {
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 0.25rem;
-    }
-    .sub-header {
-        font-size: 1.05rem;
-        color: #64748b;
-        margin-bottom: 1.5rem;
-    }
-    .metric-box {
-        background-color: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 1rem;
-        text-align: center;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.markdown('<div class="main-header">🔒 PII Redaction & Anonymization</div>', unsafe_allow_html=True)
-st.markdown(
-    '<div class="sub-header">Upload a Microsoft Word (.docx) document to detect and redact sensitive PII across text runs, tables, and embedded scanned ID cards.</div>',
-    unsafe_allow_html=True,
+st.title("🔒 PII Redaction & Anonymization")
+st.write(
+    "Upload a Microsoft Word (`.docx`) document to detect and redact sensitive PII "
+    "across text runs, tables, and embedded scanned ID cards."
 )
 
 
@@ -185,13 +159,8 @@ if uploaded_file is not None:
 # -----------------------------------------------------------------------------
 # Footer
 # -----------------------------------------------------------------------------
-st.markdown("---")
-st.markdown(
-    """
-    <div style="text-align: center; color: #94a3b8; font-size: 0.85rem;">
-        KSH International Limited Red Herring Prospectus PII Redaction & Anonymization Engine<br>
-        9 Required PII Categories &bull; Consistent Faker Replacements &bull; EasyOCR Visual Blackout Masking
-    </div>
-    """,
-    unsafe_allow_html=True,
+st.divider()
+st.caption(
+    "KSH International Limited Red Herring Prospectus PII Redaction & Anonymization Engine • "
+    "9 Required PII Categories • Consistent Faker Replacements • EasyOCR Visual Blackout Masking"
 )
