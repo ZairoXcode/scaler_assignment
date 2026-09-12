@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PII Redaction Tool</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --error: #dc2626;
+      --error-bg: #fef2f2;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    .upload-area {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 32px 20px;
+      text-align: center;
+      background: #fafafa;
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+      margin-bottom: 20px;
+    }
+
+    .upload-area:hover,
+    .upload-area.dragover {
+      border-color: var(--primary);
+      background: #f0f7ff;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .file-name {
+      margin-top: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--primary);
+      word-break: break-all;
+    }
+
+    .btn {
+      display: inline-block;
+      width: 100%;
+      background-color: var(--primary);
+      color: white;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 12px 20px;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      background-color: var(--primary-hover);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-radius: 50%;
+      border-top-color: #ffffff;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .btn-download {
+      background-color: var(--success);
+      margin-top: 16px;
+    }
+
+    .btn-download:hover {
+      background-color: #15803d;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .alert-error {
+      background-color: var(--error-bg);
+      color: var(--error);
+      border: 1px solid #fecaca;
+    }
+
+    .results-card {
+      display: none;
+    }
+
+    .results-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--success);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .counts-table {
+      width: 100%;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      border-collapse: collapse;
+      margin: 12px 0;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .counts-table th,
+    .counts-table td {
+      padding: 8px 14px;
+      text-align: left;
+    }
+
+    .counts-table th {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .counts-table td:last-child,
+    .counts-table th:last-child {
+      text-align: right;
+    }
+
+    .counts-table tr:not(:last-child) td {
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .total-row {
+      font-weight: 700;
+      border-top: 1px solid var(--border) !important;
+      background: #f8fafc;
+    }
+
+    .spinner {
+      display: none;
+      margin: 16px auto 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .meta-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      width: 100%;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <header>
+      <h1>PII Redaction Tool</h1>
+      <p class="subtitle">Upload a Microsoft Word document (.docx) to detect and redact sensitive PII</p>
+    </header>
+
+    <div id="errorAlert" class="alert alert-error"></div>
+
+    <div class="card">
+      <form id="uploadForm">
+        <div class="upload-area" id="dropArea">
+          <p style="font-weight: 500; margin-bottom: 4px;">Choose a .docx file or drag it here</p>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Supports standard Microsoft Word documents up to 50
+            MB</p>
+          <input type="file" id="fileInput" name="file" accept=".docx" class="file-input">
+          <div id="selectedFileName" class="file-name"></div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn" disabled>Redact Document</button>
+      </form>
+
+      <div id="spinner" class="spinner">
+        <p style="font-size: 0.8rem; margin-top: 4px;">Larger prospectuses may take time to process.</p>
+      </div>
+    </div>
+
+    <div id="resultsCard" class="card results-card">
+      <div class="results-title">
+        <span>✓</span>
+        <span>Document processed successfully.</span>
+      </div>
+
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px;">Detected PII Breakdown:</p>
+
+      <table class="counts-table" id="countsTable">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody id="countsBody"></tbody>
+      </table>
+
+      <a id="downloadBtn" class="btn btn-download" href="#" download>Download Redacted Document</a>
+      <span id="timingMeta" class="meta-tag"></span>
+    </div>
+  </div>
+
+  <script>
+    const dropArea = document.getElementById('dropArea');
+    const fileInput = document.getElementById('fileInput');
+    const selectedFileName = document.getElementById('selectedFileName');
+    const submitBtn = document.getElementById('submitBtn');
+    const uploadForm = document.getElementById('uploadForm');
+    const spinner = document.getElementById('spinner');
+    const errorAlert = document.getElementById('errorAlert');
+    const resultsCard = document.getElementById('resultsCard');
+    const countsBody = document.getElementById('countsBody');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const timingMeta = document.getElementById('timingMeta');
+
+    let currentBlobUrl = null;
+
+    dropArea.addEventListener('click', () => fileInput.click());
+
+    dropArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropArea.classList.add('dragover');
+    });
+
+    dropArea.addEventListener('dragleave', () => {
+      dropArea.classList.remove('dragover');
+    });
+
+    dropArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropArea.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) {
+        fileInput.files = e.dataTransfer.files;
+        updateSelectedFile();
+      }
+    });
+
+    fileInput.addEventListener('change', updateSelectedFile);
+
+    function updateSelectedFile() {
+      hideError();
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        if (!file.name.toLowerCase().endsWith('.docx')) {
+          showError('Invalid file type. Please select a Microsoft Word (.docx) document.');
+          submitBtn.disabled = true;
+          selectedFileName.textContent = '';
+          return;
+        }
+        selectedFileName.textContent = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+        submitBtn.disabled = false;
+      } else {
+        selectedFileName.textContent = '';
+        submitBtn.disabled = true;
+      }
+    }
+
+    function showError(msg) {
+      errorAlert.textContent = msg;
+      errorAlert.style.display = 'block';
+    }
+
+    function hideError() {
+      errorAlert.style.display = 'none';
+      errorAlert.textContent = '';
+    }
+
+    uploadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideError();
+      resultsCard.style.display = 'none';
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        showError('Please choose a .docx document first.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="btn-spinner"></span>Redacting...';
+      spinner.style.display = 'block';
+
+      const startTime = performance.now();
+
+      try {
+        const response = await fetch('/redact', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const elapsedSec = ((performance.now() - startTime) / 1000).toFixed(2);
+
+        if (!response.ok) {
+          let errorText = 'Processing failed. Please try again.';
+          try {
+            const errData = await response.json();
+            if (errData.detail) errorText = errData.detail;
+          } catch (_) {
+            errorText = await response.text() || errorText;
+          }
+          showError(errorText);
+          return;
+        }
+
+        const blob = await response.blob();
+        if (currentBlobUrl) {
+          window.URL.revokeObjectURL(currentBlobUrl);
+        }
+        currentBlobUrl = window.URL.createObjectURL(blob);
+
+        const totalRedactions = response.headers.get('X-Total-Redactions') || '0';
+        const rawCounts = response.headers.get('X-Category-Counts');
+        let counts = {};
+        if (rawCounts) {
+          try {
+            counts = JSON.parse(rawCounts);
+          } catch (e) {
+            console.error('Failed to parse entity counts:', e);
+          }
+        }
+
+        // Populate counts table
+        countsBody.innerHTML = '';
+        const order = ['PERSON', 'ORGANIZATION', 'EMAIL', 'PHONE', 'ADDRESS', 'DOB', 'SSN', 'CREDIT_CARD', 'IP_ADDRESS'];
+        let displayTotal = 0;
+
+        for (const cat of order) {
+          if (counts[cat] !== undefined) {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${cat}</td><td>${counts[cat]}</td>`;
+            countsBody.appendChild(row);
+            displayTotal += counts[cat];
+          }
+        }
+
+        // Any categories not in default order
+        for (const [cat, count] of Object.entries(counts)) {
+          if (!order.includes(cat)) {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${cat}</td><td>${count}</td>`;
+            countsBody.appendChild(row);
+            displayTotal += count;
+          }
+        }
+
+        const totalRow = document.createElement('tr');
+        totalRow.className = 'total-row';
+        totalRow.innerHTML = `<td>TOTAL</td><td>${totalRedactions || displayTotal}</td>`;
+        countsBody.appendChild(totalRow);
+
+        // Download link setup
+        const outName = file.name.toLowerCase().endsWith('.docx')
+          ? `Redacted_${file.name}`
+          : 'Redacted_Document.docx';
+        downloadBtn.href = currentBlobUrl;
+        downloadBtn.download = outName;
+
+        timingMeta.textContent = `Completed in ${elapsedSec}s.`;
+        resultsCard.style.display = 'block';
+
+      } catch (err) {
+        showError('Network or server error occurred during redaction.');
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Redact Document';
+        spinner.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+
+</html>
